@@ -1,10 +1,12 @@
-# chapter-1
+# My code to support reading Clojure for Data Science
 
-A Clojure library designed to ... well, that part is up to you.
-
-## Usage
-
-FIXME
+As a long time Clojure dabbler, I've wanted to explore it's relationship with 
+mathematics and data science. [Clojure]
+(https://www.packtpub.com/big-data-and-business-intelligence/clojure-data-science) 
+for Data Science has been recommended several times as not only does it dig 
+into the maths, but also big data concerns like stream processing. I've chosen 
+to write the code out of the book as it allows me to understand the concepts 
+better than just running the examples provided.
 
 ## License
 
