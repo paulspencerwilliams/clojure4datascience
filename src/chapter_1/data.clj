@@ -29,6 +29,13 @@
   (->> (load-data :uk)
        (i/$where {"Election Year" {:$ne nil}})))
 
+(defmethod load-data :uk-victors [_]
+  (->> (load-data :uk-scrubbed)
+       (i/$where {:Con {:$fn number?} :LD {:$fn number?}})
+       (i/add-derived-column :victors       [:Con :LD] +)
+       (i/add-derived-column :victors-share [:victors :Votes] /)
+       (i/add-derived-column :turnout    [:Votes :Electorate] /)))
+
 ;; (->> (load-data :uk-scrubbed) (i/$ "Electorate") (count))
 
 (defmethod load-data :ru [_]

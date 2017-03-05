@@ -132,3 +132,62 @@
        (i/$ :turnout)
        (c/qq-plot)
        (i/view)))
+
+(defn as-pmf [bins]
+  (let [histogram (frequencies bins)
+        total (reduce + (vals histogram))]
+    (->> histogram
+         (map (fn [[k v]]
+                [k (/ v total)]))
+         (into {}))))
+
+(defn visualise-uk-victors []
+  (->> (load-data :uk-victors)
+       (i/$ :victors-share)
+       (c/qq-plot)
+       (i/view)))
+
+(defn visualise-pmf-of-uk-russian-elections []
+  (let [n-bins 40
+        uk (->> (load-data :uk-victors)
+                (i/$ :turnout)
+                (bin n-bins)
+                (as-pmf))
+        ru (->> (load-data :ru-victors)
+                (i/$ :turnout)
+                (bin n-bins)
+                (as-pmf))]
+    (-> (c/xy-plot (keys uk) (vals uk)
+                   :series-label "UK"
+                   :legend true
+                   :x-label "Turnout Bins"
+                   :y-label "Probability")
+        (c/add-lines (keys ru) (vals ru)
+                     :series-label "Russia")
+        (i/view))))
+
+(defn visualising-uk-turnout-via-scatter-plot []
+  (let [data (load-data :uk-victors)]
+    (-> (c/scatter-plot (i/$ :turnout data)
+                        (i/$ :victors-share data)
+                        :x-label "Turnout"
+                        :y-label "Victor's share")
+        (i/view))))
+
+(defn visualising-russia-turnout-via-scatter-plot []
+  (let [data (load-data :ru-victors)]
+    (-> (c/scatter-plot (i/$ :turnout data)
+                        (i/$ :victors-share data)
+                        :x-label "Turnout"
+                        :y-label "Victor's share")
+        (i/view))))
+
+(defn visualising-russian-plot-with-opacity-due-to-noise []
+  (let [data (-> (load-data :ru-victors)
+                 (s/sample :size 10000))]
+    (-> (c/scatter-plot (i/$ :turnout data)
+                        (i/$ :victors-share data)
+                        :x-label "Turnout"
+                        :y-label "Victor share")
+        (c/set-alpha 0.05)
+        (i/view))))
