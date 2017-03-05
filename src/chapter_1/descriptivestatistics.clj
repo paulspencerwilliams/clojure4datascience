@@ -48,3 +48,23 @@
   (let [xs (->> (d/load-data :uk-scrubbed)
                (i/$ "Electorate"))] 
    (s/quantile xs :probs [0 1/4 1/2 3/4 1])))
+
+(defn bin [n-bins xs]
+  (let [min-x (apply min xs)
+        max-x (apply max xs)
+        range-x (- max-x min-x)
+        bin-fn (fn [x]
+                 (-> x
+                     (- min-x)
+                     (/ range-x)
+                     (* n-bins)
+                     (int)
+                     (min (dec n-bins))))]
+    (map bin-fn xs)))
+
+(bin 5 (range 15))
+
+(->> (d/load-data :uk-scrubbed)
+     (i/$ "Electorate")
+     (bin 5)
+     (frequencies))
