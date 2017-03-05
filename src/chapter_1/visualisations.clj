@@ -121,3 +121,14 @@
                       (map ecdf-dishonest sample-dishonest)
                       :series-label "Dishonest baker")
          (i/view))))
+(defn visualise-russian-electorial-data-on-histogram []
+  (-> (i/$ :turnout  (load-data :ru-victors))
+       (c/histogram :x-label "Russia turnout"
+                    :nbins 20)
+       (i/view)))
+
+(defn visualise-russian-electorial-data-on-qq []
+  (->> (load-data :ru-victors)
+       (i/$ :turnout)
+       (c/qq-plot)
+       (i/view)))
