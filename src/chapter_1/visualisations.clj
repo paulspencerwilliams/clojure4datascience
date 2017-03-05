@@ -103,3 +103,21 @@
                            (take 10000))
                       :series-label "Dishonest baker")
       (i/view)))
+
+(defn visualise-xyplots-of-cdfs-to-compare-bakers []
+  (let [sample-honest (->>  (honest-baker 1000 30) 
+                            (take 1000))
+        sample-dishonest (->>  (dishonest-baker 950 30) 
+                               (take 1000))
+        ecdf-honest (s/cdf-empirical sample-honest)
+        ecdf-dishonest (s/cdf-empirical sample-dishonest)]
+    (-> (c/xy-plot sample-honest
+                     (map ecdf-honest sample-honest)
+                     :x-label "Loaf weight (g)"
+                     :y-label "Probablity"
+                     :legend true
+                     :series-label "Honest baker")
+         (c/add-lines sample-dishonest
+                      (map ecdf-dishonest sample-dishonest)
+                      :series-label "Dishonest baker")
+         (i/view))))
