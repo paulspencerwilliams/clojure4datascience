@@ -25,6 +25,12 @@
      (i/$ "Electorate")
      median)
 
+(defn variance [xs]
+  (let [x-bar (mean xs)
+        n (count xs)
+        square-deviation (fn [x] (i/sq (- x x-bar)))]
+    (mean (map square-deviation xs))))
+
 (defn quartile [q xs]
   (let [n (dec (count xs))
         i (-> (* n q)
