@@ -83,7 +83,7 @@
 (defn skew-of-honest-baker []
   (skew-of-loaves (honest-baker 1000 30)))
 
-(defn visualise-qq-plots-to-compare-bakers []
+(defn visualise-with-qq-plots-to-compare-bakers []
   (->> (honest-baker 1000 30)
        (take 10000)
        (c/qq-plot)
@@ -92,3 +92,14 @@
        (take 10000)
        (c/qq-plot)
        (i/view)))
+
+(defn visualise-with-box-plots-to-compare-bakers []
+  (-> (c/box-plot (->> (honest-baker 1000 30)
+                       (take 10000))
+                  :legend true
+                  :y-label "Loaf weight (g)"
+                  :series-label "Honest baker")
+      (c/add-box-plot (->> (dishonest-baker 950 30)
+                           (take 10000))
+                      :series-label "Dishonest baker")
+      (i/view)))
