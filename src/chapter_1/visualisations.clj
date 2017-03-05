@@ -82,3 +82,13 @@
 
 (defn skew-of-honest-baker []
   (skew-of-loaves (honest-baker 1000 30)))
+
+(defn visualise-qq-plots-to-compare-bakers []
+  (->> (honest-baker 1000 30)
+       (take 10000)
+       (c/qq-plot)
+       (i/view))
+  (->> (dishonest-baker 950 30)
+       (take 10000)
+       (c/qq-plot)
+       (i/view)))
