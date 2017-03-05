@@ -1,13 +1,13 @@
 (ns chapter-1.descriptivestatistics
   (:require   [incanter.core :as i]
               [incanter.stats :as s]
-              [chapter-1.data :as d]))
+              [chapter-1.data :refer :all]))
 
 (defn mean [xs]
   (/ (reduce + xs)
      (count xs)))
 
-(->> (d/load-data :uk-scrubbed)
+(->> (load-data :uk-scrubbed)
      (i/$ "Electorate")
      (mean))
 
@@ -21,7 +21,7 @@
            (take 2)
            (mean)))))
 
-(->> (d/load-data :uk-scrubbed)
+(->> (load-data :uk-scrubbed)
      (i/$ "Electorate")
      median)
 
@@ -45,7 +45,7 @@
     (map f [0 1/4 1/2 3/4 1])))
 
 (defn incanter-quartile []
-  (let [xs (->> (d/load-data :uk-scrubbed)
+  (let [xs (->> (load-data :uk-scrubbed)
                (i/$ "Electorate"))] 
    (s/quantile xs :probs [0 1/4 1/2 3/4 1])))
 
@@ -64,7 +64,7 @@
 
 (bin 5 (range 15))
 
-(->> (d/load-data :uk-scrubbed)
+(->> (load-data :uk-scrubbed)
      (i/$ "Electorate")
      (bin 5)
      (frequencies))
