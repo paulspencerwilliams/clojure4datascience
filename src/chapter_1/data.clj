@@ -6,7 +6,7 @@
 (defmulti load-data identity)
 
 (defmethod load-data :uk [_]
-  (-> (io/resource "UK2010.xls")
+  (-> (io/resource "ch1/UK2010.xls")
       (str)
       (xls/read-xls)))
 
@@ -39,10 +39,10 @@
 ;; (->> (load-data :uk-scrubbed) (i/$ "Electorate") (count))
 
 (defmethod load-data :ru [_]
-  (i/conj-rows (-> (io/resource "Russia2011_1of2.xls")
+  (i/conj-rows (-> (io/resource "ch1/Russia2011_1of2.xls")
                    (str)
                    (xls/read-xls))
-               (-> (io/resource "Russia2011_2of2.xls")
+               (-> (io/resource "ch1/Russia2011_2of2.xls")
                    (str)
                    (xls/read-xls))))
 
